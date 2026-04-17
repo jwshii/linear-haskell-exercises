@@ -9,7 +9,7 @@ common warnings
 
 library
     import:           warnings
-    exposed-modules:  Examples
+    exposed-modules:  Exercises
     -- other-modules:
     -- other-extensions:
     build-depends:    base ^>=4.22.0.0
