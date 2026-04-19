@@ -147,3 +147,22 @@ Indeed, there should be no way to implement this using your API:
 -- eatCakeAndHaveItToo''' =
 --   let c = L.bakeCake id
 --   in L.eatCake c `seq` c
+
+
+{-
+After completing the exercise, you should now have some intuition
+about two important ideas that appear in applications of Linear
+Haskell such as safe mutable arrays:
+
+1. To enforce that the output of a function be used linearly, you
+   can wrap it in a continuation. For example, the allocation
+   function for mutable arrays in Linear Haskell looks like this:
+
+   alloc :: Int -> a -> (Array a %1-> b) %1-> b
+
+2. An unrestricted output type can prevent linear inputs from
+   leaking. For example, the function to convert a mutable array
+   to an immutable vector in Linear Haskell looks like this:
+
+   freeze :: Array a %1-> Ur (Vector a)
+-}
