@@ -6,6 +6,7 @@ module Cake where
 import Prelude.Linear
 import qualified NonLinearCake as NL
 import qualified LinearCake as L
+import Debug.Trace.Linear (trace)
 
 {-
 Exercise 4:
@@ -148,21 +149,76 @@ Indeed, there should be no way to implement this using your API:
 --   let c = L.bakeCake id
 --   in L.eatCake c `seq` c
 
+{-
+Part 4:
+
+Let's extend our API a bit.
+
+Suppose that we don't always want to immediately eat a cake after
+baking it. Instead, we will use `checkCakeMsg` to repeatedly
+check the cake's message until it reads the same as our `endMsg`
+below. We will also log each intermediate message along the way
+using the `trace` function.
+
+Read `eatCakeWhenReady`, which does the above using our
+`NonLinearCake` API.
+
+(You may wonder why it has a `case` — while it doesn't matter
+here, `case` is better behaved than `let` for the version you are
+about to write.) (And you may notice that the cake is trivially
+ready at the start — don't worry about this; focus on
+understanding the types.)
+
+* Implement `eatCakeWhenReady'` below so that it follows the same
+  logic but uses the `LinearCake` API instead.
+* It won't work right away. You will need to make a few changes
+  to the type signature of `L.checkCakeMsg`, *including to its
+  output type*, for `eatCakeWhenReady'` to work.
+* Keep going until `eatCakeWhenReady'` compiles.
+-}
+
+endMsg :: String
+endMsg = "ready"
+
+eatCakeWhenReady :: ()
+eatCakeWhenReady = go NL.bakeCake
+  where
+    go :: NL.Cake -> ()
+    go c =
+      case NL.checkCakeMsg c of
+        msg -> trace msg (if msg == endMsg
+          then NL.eatCake c
+          else go c)
+
+-- This should follow the above logic as closely as possible, but
+-- using the L. versions of the functions.
+eatCakeWhenReady' :: ()
+eatCakeWhenReady' = undefined
 
 {-
 After completing the exercise, you should now have some intuition
-about two important ideas that appear in applications of Linear
+about a few important ideas that appear in applications of Linear
 Haskell such as safe mutable arrays:
 
 1. To enforce that the output of a function be used linearly, you
    can wrap it in a continuation. For example, the allocation
    function for mutable arrays in Linear Haskell looks like this:
 
-   alloc :: Int -> a -> (Array a %1-> b) %1-> b
+   alloc :: Int -> a -> (Array a %1-> Ur b) %1-> b
 
 2. An unrestricted output type can prevent linear inputs from
    leaking. For example, the function to convert a mutable array
-   to an immutable vector in Linear Haskell looks like this:
+   to an immutable vector looks like this:
 
    freeze :: Array a %1-> Ur (Vector a)
+
+3. And finally, we can also make better sense of this function
+   for reading a value in the mutable array, whose output type is
+   more complicated than we might otherwise expect:
+
+   read :: Array a %1 -> Int -> (Ur a, Array a)
+
+   We need to wrap the value in a `Ur`, so that it can be used in
+   arbitrary computations, and we need to return another array,
+   as the original has been consumed.
 -}
