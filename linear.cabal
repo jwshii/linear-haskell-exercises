@@ -9,9 +9,7 @@ common warnings
 
 library
     import:           warnings
-    exposed-modules:  Exercises
-    -- other-modules:
-    -- other-extensions:
+    exposed-modules:  Exercises, OnTests, Cake, NonLinearCake, LinearCake
     build-depends:    base ^>=4.22.0.0
                     , linear-base
     hs-source-dirs:   .
