@@ -107,21 +107,17 @@ multiplicity polymorphic. Consider the `on` function:
 
 on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 
-If we allow the arrow inside the argument of type `(a -> b)`
-to have annotation %p, and generalize as much as possible from
-there, we will get a version that allows instantiations where
-all or none of the arrows are linear.
-
-If we instead constrain that arrow to be %1, and generalize as
-much as possible from there, we will get a different version that
-allows instantiations where only one of `a1` or `a2` are linear.
-
-Neither is strictly more general than the other.
+For example, we could annotate the arrow inside the argument of
+type `(a -> b)` with %p or %1, and then generalize as much as
+possible from there. Only the first version, starting with the
+%p, will allow an instantation where none of the arrows are
+linear. And only the second version, starting with the %1, will
+allow instantiations where just one of `a1` or `a2` are linear.
 
 Do these two generalizations by changing the type signature of
 `on1` and `on2`, respectively, keeping the provided annotation
-inside `(a -> b)` in tact. Remember that you will want to
-annotate arrows with multiplicity variables.
+inside `(a -> b)` intact. Remember that you will want to annotate
+arrows with multiplicity variables like %p, %q, etc.
 
 Check your work by running `cabal build` in the terminal. You can
 open a terminal by clicking the hamburger menu in the top left ->
