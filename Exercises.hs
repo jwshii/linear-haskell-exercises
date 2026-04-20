@@ -103,7 +103,9 @@ both f (x1, x2) = (f x1, f x2)
 Part 2:
 
 Oftentimes there is more than one way to make a function
-multiplicity polymorphic. Consider the `on` function.
+multiplicity polymorphic. Consider the `on` function:
+
+on :: (b -> b -> c) -> (a -> b) -> a -> a -> c
 
 If we allow the arrow inside the argument of type `(a -> b)`
 to have annotation %p, and generalize as much as possible from
