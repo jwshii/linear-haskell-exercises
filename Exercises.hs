@@ -12,8 +12,8 @@ Let's make sure the IDE is working as expected.
 
 1. `ex1` should compile without error.
 
-2. When un-commented, `ex2` should have an error. The error message
-  should read: Couldn't match type 'Many' with 'One' ...
+2. When un-commented, `ex2` should have an error. The error
+   message should read: Couldn't match type 'Many' with 'One' ...
 
 3. Make sure to re-comment `ex2` afterwards.
 -}
@@ -78,36 +78,16 @@ Exercise 2:
 Let's practice with multiplicity polymorphism. In this exercise,
 you will be modifying type signatures (by adding multiplicity
 annotations) but leaving the implementations unchanged.
-
-1. Write a multiplicity polymorphic version of the `both`
-   function we saw during the lecture. Annotate arrows with
-   multiplicity variables such that `both` still compiles,
-   and so do the two "test cases" under `both`.
-
-2. Oftentimes there is more than one way to make a function
-   multiplicity polymorphic. Consider the `on` function.
-
-   If we allow the arrow inside the argument of type `(a -> b)`
-   to have annotation %p, and generalize as much as possible from
-   there, we will get a version that allows instantiations where
-   all or none of the arrows are linear.
-
-   If we instead constrain that arrow to be %1, and generalize
-   from there, we will get a different version that allows
-   instantiations where only one of `a1` or `a2` are linear.
-
-   Neither is strictly more general than the other.
-
-   Do these two generalizations by changing the type signature of
-   `on1` and `on2`, respectively, keeping the provided annotation
-   inside `(a -> b)` in tact.
-
-   Check your work by running `cabal build` in the terminal. (The
-   "hidden" test cases are in a separate file called `OnTests.hs`,
-   which you can peek at if you get stuck.)
 -}
 
--- Part 1:
+{-
+Part 1:
+
+Write a multiplicity polymorphic version of the `both`
+function we saw during the lecture. Annotate arrows with
+multiplicity variables such that `both` still compiles,
+and so do the two "test cases" under `both`.
+-}
 
 both :: (a -> b) -> (a, a) -> (b, b)
 both f (x1, x2) = (f x1, f x2)
@@ -119,7 +99,33 @@ both f (x1, x2) = (f x1, f x2)
 -- test_both_maxLinear :: (a %1-> b) -> (a, a) %1-> (b, b)
 -- test_both_maxLinear = both
 
--- Part 2:
+{-
+Part 2:
+
+Oftentimes there is more than one way to make a function
+multiplicity polymorphic. Consider the `on` function.
+
+If we allow the arrow inside the argument of type `(a -> b)`
+to have annotation %p, and generalize as much as possible from
+there, we will get a version that allows instantiations where
+all or none of the arrows are linear.
+
+If we instead constrain that arrow to be %1, and generalize as
+much as possible from there, we will get a different version that
+allows instantiations where only one of `a1` or `a2` are linear.
+
+Neither is strictly more general than the other.
+
+Do these two generalizations by changing the type signature of
+`on1` and `on2`, respectively, keeping the provided annotation
+inside `(a -> b)` in tact. Remember that you will want to
+annotate arrows with multiplicity variables.
+
+Check your work by running `cabal build` in the terminal. You can
+open a terminal by clicking the hamburger menu in the top left ->
+Terminal -> New Terminal. (The "hidden" test cases are in a file
+called `OnTests.hs`, which you can peek at if you get stuck.)
+-}
 
 on1 :: (b -> b -> c) -> (a %p-> b) -> a -> a -> c
 on1 op f a1 a2 = op (f a1) (f a2)

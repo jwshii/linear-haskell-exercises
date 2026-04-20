@@ -41,9 +41,9 @@ We will do so by gradually modifying the API defined in
 `LinearCake.hs` — currently, it's the same as `NonLinearCake.hs`.
 
 Some quick notes about exports and imports:
-* Both files export the type Cake, and the functions bakeCake and
-  eatCake. They do *not* export the constructor for Cakes, so
-  that the only way to create a Cake is through the API.
+* Both files export the type Cake, and the functions `bakeCake`
+  and `eatCake`. They do *not* export the constructor for Cakes,
+  so that the only way to create a Cake is through the API.
 * In this file, we differentiate the two Cake APIs by using
   qualified imports. Everything pertaining to `NonLinearCake`
   should be prefixed with `NL`, as seen above, and everything
@@ -120,7 +120,7 @@ and `eatCake` is necessary?)
 Part 3:
 
 Sadly, there is still a way for our cake to escape. Observe that
-`L.bakeCake (\c -> c)` typechecks, and results in a `Cake` that
+`L.bakeCake (\c -> c)` typechecks, and results in a Cake that
 is not linearly constrained.
 
 Can you figure out how to prevent this from happening?
@@ -133,10 +133,6 @@ Below:
 * Fix the implementation of `justEatCake'''` so that it compiles
   again. It may help to use `lseq` (which was also used in Part 2).
 * Make sure `eatCakeAndHaveItToo'''` no longer compiles.
-
-Indeed, there should be no way to implement this using your API:
-  myCake :: Cake
-  myCake = ______
 -}
 
 -- -- Fix the body so that it compiles with your new API:
@@ -200,8 +196,9 @@ about a few important ideas that appear in applications of Linear
 Haskell such as safe mutable arrays:
 
 1. To enforce that the output of a function be used linearly, you
-   can wrap it in a continuation. For example, the allocation
-   function for mutable arrays in Linear Haskell looks like this:
+   can instead request a continuation that uses its argument
+   linearly. For example, the allocation function for mutable
+   arrays in Linear Haskell looks like this:
 
    alloc :: Int -> a -> (Array a %1-> Ur b) %1-> b
 
