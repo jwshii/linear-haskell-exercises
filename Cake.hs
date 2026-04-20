@@ -166,8 +166,7 @@ Read `eatCakeWhenReady`, which does the above using our
 (You may wonder why it has a `case` — while it doesn't matter
 here, `case` is better behaved than `let` for the version you are
 about to write.) (And you may notice that the cake is trivially
-ready at the start — don't worry about this; focus on
-understanding the types.)
+ready at the start — don't worry about this; focus on the types.)
 
 * Implement `eatCakeWhenReady'` below so that it follows the same
   logic but uses the `LinearCake` API instead.

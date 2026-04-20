@@ -1,7 +1,7 @@
 {-# LANGUAGE LinearTypes #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 
-module Tests where
+module OnTests where
 
 import Exercises (on1, on2)
 
