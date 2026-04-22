@@ -10,12 +10,12 @@ newtype Cake = Cake Bool
 
 -- You can modify anything below here:
 
-bakeCake :: Cake
-bakeCake = (Cake True)
+bakeCake :: (Cake %1-> Ur b) -> b
+bakeCake f = unur (f (Cake True))
 
-eatCake :: Cake -> ()
-eatCake _ = ()
+eatCake :: Cake %1-> ()
+eatCake (Cake b) = if b then () else ()
 
 -- Not used until Part 4:
-checkCakeMsg :: Cake -> String
-checkCakeMsg (Cake b) = if b then "ready" else "try again later"
+checkCakeMsg :: Cake %1-> (Ur String, Cake)
+checkCakeMsg (Cake b) = if b then (Ur "ready", Cake True) else (Ur "try again later", Cake False)

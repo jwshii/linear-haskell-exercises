@@ -53,9 +53,9 @@ chain (f : fs) x = chain fs (f x)
 -- chain1 (f : fs) x = chain1 fs (f x)
 
 -- Variant 2:
--- chain2 :: [a %1-> a] -> a -> a
--- chain2 [] x = x
--- chain2 (f : fs) x = chain2 fs (f x)
+chain2 :: [a %1-> a] -> a -> a
+chain2 [] x = x
+chain2 (f : fs) x = chain2 fs (f x)
 
 -- Variant 3:
 -- chain3 :: [a -> a] %1-> a -> a
@@ -63,14 +63,14 @@ chain (f : fs) x = chain fs (f x)
 -- chain3 (f : fs) x = chain3 fs (f x)
 
 -- Variant 4:
--- chain4 :: [a %1-> a] -> a %1-> a
--- chain4 [] x = x
--- chain4 (f : fs) x = chain4 fs (f x)
+chain4 :: [a %1-> a] -> a %1-> a
+chain4 [] x = x
+chain4 (f : fs) x = chain4 fs (f x)
 
 -- Variant 5:
--- chain5 :: [a %1-> a] %1-> a %1-> a
--- chain5 [] x = x
--- chain5 (f : fs) x = chain5 fs (f x)
+chain5 :: [a %1-> a] %1-> a %1-> a
+chain5 [] x = x
+chain5 (f : fs) x = chain5 fs (f x)
 
 {-
 Exercise 2:
@@ -89,7 +89,7 @@ multiplicity variables such that `both` still compiles,
 and so do the two "test cases" under `both`.
 -}
 
-both :: (a -> b) -> (a, a) -> (b, b)
+both :: (a %p-> b) -> (a, a) %p-> (b, b)
 both f (x1, x2) = (f x1, f x2)
 
 -- Uncomment to test `both`:
@@ -125,10 +125,10 @@ Terminal -> New Terminal. (The "hidden" test cases are in a file
 called `OnTests.hs`, which you can peek at if you get stuck.)
 -}
 
-on1 :: (b -> b -> c) -> (a %p-> b) -> a -> a -> c
+on1 :: (b %p-> b %p-> c) %r-> (a %p-> b) -> a %p-> a %p-> c
 on1 op f a1 a2 = op (f a1) (f a2)
 
-on2 :: (b -> b -> c) -> (a %1-> b) -> a -> a -> c
+on2 :: (b %p-> b %q-> c) %r-> (a %1-> b) -> a %p-> a %q-> c
 on2 op f a1 a2 = op (f a1) (f a2)
 
 -- Run `cabal build` to test `on1` and `on2`.
@@ -144,16 +144,16 @@ If it isn't, convince yourself why not.
 -}
 
 f1 :: (a, a) -> Ur a
-f1 = undefined
+f1 (a, _) = Ur a
 
 f2 :: (a, a) %1-> a
 f2 = undefined
 
 f3 :: (Ur a, a) %1-> a
-f3 = undefined
+f3 (Ur _, a) = a
 
 f4 :: (Ur a, Ur a) %1-> a
-f4 = undefined
+f4 (Ur _, Ur a) = a
 
 f5 :: (a, a) %1-> Ur a
 f5 = undefined

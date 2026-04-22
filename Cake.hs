@@ -64,15 +64,15 @@ Unfortunately, our problem persists. We can still return a cake
 after eating it; that is, the example below will still compile:
 -}
 
--- This is fine, and compiles:
-justEatCake' :: ()
-justEatCake' = L.eatCake L.bakeCake
+-- -- This is fine, and compiles:
+-- justEatCake' :: ()
+-- justEatCake' = L.eatCake L.bakeCake
 
--- This is bad, but still compiles:
-eatCakeAndHaveItToo' :: L.Cake
-eatCakeAndHaveItToo' =
-  let c = L.bakeCake
-  in L.eatCake c `seq` c
+-- -- This is bad, but still compiles:
+-- eatCakeAndHaveItToo' :: L.Cake
+-- eatCakeAndHaveItToo' =
+--   let c = L.bakeCake
+--   in L.eatCake c `seq` c
 
 {-
 Note: When you transition to Part (n + 1), re-comment the
@@ -137,7 +137,7 @@ Below:
 
 -- -- Fix the body so that it compiles with your new API:
 -- justEatCake''' :: ()
--- justEatCake''' = L.bakeCake (\c -> L.eatCake c)
+-- justEatCake''' = L.bakeCake (\c -> L.eatCake c `lseq` Ur ())
 
 -- -- Make sure this no longer compiles:
 -- eatCakeAndHaveItToo''' :: L.Cake
@@ -188,7 +188,14 @@ eatCakeWhenReady = go NL.bakeCake
 -- This should follow the above logic as closely as possible, but
 -- using the L. versions of the functions.
 eatCakeWhenReady' :: ()
-eatCakeWhenReady' = undefined
+eatCakeWhenReady' = L.bakeCake go
+  where
+    go :: L.Cake %1-> Ur ()
+    go c =
+      case L.checkCakeMsg c of
+        (Ur msg, c') -> trace msg (if msg == endMsg
+          then L.eatCake c' `lseq` Ur ()
+          else go c')
 
 {-
 After completing the exercise, you should now have some intuition
